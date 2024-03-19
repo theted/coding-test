@@ -6,18 +6,19 @@ import { mapScoresToUsers, getHighscores } from "./helpers.js"
 import scores from "./scores"
 import users from "./users"
 
+const initialUserScores = mapScoresToUsers(scores, users)
+
 export default function App() {
   const [highscores, setHighscores] = useState({})
 
   useEffect(() => {
-    const initialUserScores = mapScoresToUsers(scores, users)
     const initialHighscores = getHighscores(initialUserScores)
     setHighscores(initialHighscores)
   }, [])
 
   function handleSheetData(data: ExcelRow[]) {
-    // replace this log with actual handling of the data
-    console.log(data)
+    const newHighscores = getHighscores([...initialUserScores, ...data])
+    setHighscores(newHighscores)
   }
 
   return (
