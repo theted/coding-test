@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { utils, readFile } from "xlsx";
-import { mapScoresToUsers, getHighscores } from "../src/helpers";
+import {
+  mapScoresToUsers,
+  getHighscores,
+  toResultObject,
+} from "../src/helpers";
 import scores from "../src/scores";
 import users from "../src/users";
 
@@ -25,7 +29,7 @@ const xlsxExpected = {
 describe("Score calculation", () => {
   it("handles scores calculation correctly", () => {
     const mapped = mapScoresToUsers(scores, users);
-    const parsed = getHighscores(mapped);
+    const parsed = toResultObject(getHighscores(mapped));
     expect(parsed).toEqual(initialExpected);
   });
 
@@ -34,7 +38,7 @@ describe("Score calculation", () => {
     const sheetName = workbook.SheetNames[0];
     const xlsxData = utils.sheet_to_json(workbook.Sheets[sheetName]);
     const mergedData = [...mapScoresToUsers(scores, users), ...xlsxData];
-    const parsed = getHighscores(mergedData);
+    const parsed = toResultObject(getHighscores(mergedData));
     expect(parsed).toEqual(xlsxExpected);
   });
 });

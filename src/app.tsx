@@ -6,16 +6,13 @@ import { mapScoresToUsers, getHighscores } from "./helpers.js"
 import scores from "./scores"
 import users from "./users"
 import { Form } from "./Form"
-import { ResultObject } from "./types"
-
-type FormData = { name: string; score: number }
-
-const initialUserScores = mapScoresToUsers(scores, users)
+import { UserScore } from "./types"
 
 export default function App() {
   const [highscores, setHighscores] = useState({})
 
   useEffect(() => {
+    const initialUserScores = mapScoresToUsers(scores, users)
     const initialHighscores = getHighscores(initialUserScores)
     setHighscores(initialHighscores)
   }, [])
@@ -25,22 +22,8 @@ export default function App() {
     setHighscores(newHighscores)
   }
 
-  const handleFormSubmit = (formData: FormData) => {
-    const newHighscores: ResultObject = {
-      ...highscores,
-      [formData.name]: highscores[formData.name]
-        ? Math.max(highscores[formData.name], formData.score)
-        : formData.score,
-    }
-
-    const updatedHighscores = Object.entries(newHighscores).map(
-      ([name, score]) => ({
-        name,
-        score,
-      })
-    )
-
-    setHighscores(getHighscores(updatedHighscores))
+  const handleFormSubmit = (formData: UserScore) => {
+    setHighscores(getHighscores([...highscores, formData]))
   }
 
   return (

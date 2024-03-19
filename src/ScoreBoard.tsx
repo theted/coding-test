@@ -1,18 +1,16 @@
 import React from "react"
-import { ResultObject } from "./types"
+import { UserScore } from "./types"
 
 type ScoreBoardProps = {
-  highscores: ResultObject
+  highscores: UserScore[]
 }
 
-export const ScoreBoard = ({ highscores }: ScoreBoardProps) => {
-  return (
-    <>
-      <ul>
-        {Object.keys(highscores).map((key) => (
-          <li key={key}>{`${key} => ${highscores[key]}`}</li>
-        ))}
-      </ul>
-    </>
-  )
-}
+export const ScoreBoard = ({ highscores }: ScoreBoardProps) => (
+  <ul>
+    {highscores.length
+      ? highscores.map(({ name, score }) => (
+          <li key={name}>{`${name} => ${score}`}</li>
+        ))
+      : null}
+  </ul>
+)
