@@ -8,37 +8,65 @@ import {
 import scores from "../src/scores";
 import users from "../src/users";
 
-const initialExpected = {
-  Jane: 988,
-  Kim: 974,
-  Barry: 742,
-};
-
-const xlsxExpected = {
-  Steve: 989,
-  Jane: 988,
-  Anna: 983,
-  Kim: 974,
-  Pierce: 974,
-  Alan: 961,
-  Barry: 917,
-  Hedvig: 903,
-  Glen: 607,
-};
-
 describe("Score calculation", () => {
-  it("handles scores calculation correctly", () => {
+  it("handles scores calculation", () => {
     const mapped = mapScoresToUsers(scores, users);
+    const expected = {
+      Jane: 988,
+      Kim: 974,
+      Barry: 742,
+    };
+
     const parsed = toResultObject(getHighscores(mapped));
-    expect(parsed).toEqual(initialExpected);
+    expect(parsed).toEqual(expected);
   });
 
-  it("handles excel parsing correctly", () => {
+  it("handles excel parsing", () => {
+    const expected = {
+      Steve: 989,
+      Jane: 988,
+      Anna: 983,
+      Kim: 974,
+      Pierce: 974,
+      Alan: 961,
+      Barry: 917,
+      Hedvig: 903,
+      Glen: 607,
+    };
+
     const workbook = readFile("scores.xlsx");
     const sheetName = workbook.SheetNames[0];
     const xlsxData = utils.sheet_to_json(workbook.Sheets[sheetName]);
     const mergedData = [...mapScoresToUsers(scores, users), ...xlsxData];
     const parsed = toResultObject(getHighscores(mergedData));
-    expect(parsed).toEqual(xlsxExpected);
+    expect(parsed).toEqual(expected);
+  });
+
+  it("handles multiple entries of the same username", () => {
+    const initial = [{ name: "foo", score: 100 }];
+
+    expect(
+      getHighscores([...initial, { name: "foo", score: 200 }])[0].score
+    ).toBe(200);
+  });
+
+  it("handles lower highscore posted after higher highscore", () => {
+    expect(
+      getHighscores([
+        { name: "foo", score: 100 },
+        { name: "foo", score: 10 },
+      ])[0].score
+    ).toBe(100);
+  });
+
+  it("handles case correctly", () => {
+    const initial = [
+      { name: "foo", score: 100 },
+      { name: "FOO", score: 200 },
+    ];
+
+    expect(toResultObject(getHighscores(initial))).toEqual({
+      Foo: 200,
+    });
   });
 });
