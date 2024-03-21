@@ -1,6 +1,6 @@
 import React, { useState, useRef, FormEvent } from "react"
 import { FormLabel, FormControl, Input, Button } from "@chakra-ui/react"
-import { P } from "@northlight/ui"
+import { P, Field } from "@northlight/ui"
 
 type FormData = {
   name: string
@@ -43,7 +43,7 @@ export const Form = ({ onFormSubmit }: FormProps) => {
 
   return (
     <form onSubmit={validateAndSubmit}>
-      <FormControl isInvalid={error}>
+      <FormControl isInvalid={error} mb="4">
         <FormLabel htmlFor="name">Name</FormLabel>
         <Input
           type="text"
@@ -54,7 +54,7 @@ export const Form = ({ onFormSubmit }: FormProps) => {
         />
       </FormControl>
 
-      <FormControl isInvalid={error}>
+      <FormControl isInvalid={error} mb="4">
         <FormLabel htmlFor="score">Score</FormLabel>
         <Input
           type="number"
@@ -66,7 +66,7 @@ export const Form = ({ onFormSubmit }: FormProps) => {
 
       {error && <P>Both fields are required</P>}
 
-      <Button mt={4} colorScheme="teal" type="submit">
+      <Button mt={2} colorScheme="teal" type="submit">
         Submit
       </Button>
     </form>
