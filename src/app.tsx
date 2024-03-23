@@ -11,7 +11,7 @@ import { UserScore } from './types'
 const initialUserScores = mapScoresToUsers(scores, users)
 
 export default function App() {
-  const [highscores, setHighscores] = useState({})
+  const [highscores, setHighscores] = useState<UserScore[]>([])
 
   useEffect(() => {
     const initialHighscores = getHighscores(initialUserScores)
@@ -19,8 +19,7 @@ export default function App() {
   }, [])
 
   function handleSheetData(data: ExcelRow[]) {
-    const newHighscores = getHighscores([...initialUserScores, ...data])
-    setHighscores(newHighscores)
+    setHighscores(getHighscores([...highscores, ...data]))
   }
 
   const handleFormSubmit = (formData: UserScore) => {
