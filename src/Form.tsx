@@ -1,6 +1,6 @@
-import React, { useState, useRef, FormEvent } from "react"
-import { FormLabel, FormControl, Input, Button } from "@chakra-ui/react"
-import { P, Field } from "@northlight/ui"
+import React, { useState, useRef, FormEvent } from 'react'
+import { FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
+import { P } from '@northlight/ui'
 
 type FormData = {
   name: string
@@ -12,7 +12,7 @@ type FormProps = {
 }
 
 export const Form = ({ onFormSubmit }: FormProps) => {
-  const [name, setName] = useState("")
+  const [name, setName] = useState('')
   const [score, setScore] = useState<number | null>()
   const [error, setError] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -20,8 +20,8 @@ export const Form = ({ onFormSubmit }: FormProps) => {
   const updateField = (e: FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
     setError(false)
-    if (name === "name") setName(value)
-    if (name === "score") setScore(Number(value))
+    if (name === 'name') setName(value)
+    if (name === 'score') setScore(Number(value))
   }
 
   const validateAndSubmit = (e: FormEvent) => {
@@ -33,7 +33,7 @@ export const Form = ({ onFormSubmit }: FormProps) => {
     }
 
     onFormSubmit({ name, score })
-    setName("")
+    setName('')
     setScore(null)
 
     if (inputRef.current) {
@@ -59,7 +59,7 @@ export const Form = ({ onFormSubmit }: FormProps) => {
         <Input
           type="number"
           name="score"
-          value={score ? score.toString() : ""}
+          value={score ? score.toString() : ''}
           onInput={updateField}
         />
       </FormControl>

@@ -1,6 +1,6 @@
-import React from "react"
-import { UserScore } from "./types"
-import { Table, Thead, Tbody, Tr, Th, Td, Fade } from "@northlight/ui"
+import React from 'react'
+import { UserScore } from './types'
+import { Table, Thead, Tbody, Tr, Th, Td, Fade } from '@northlight/ui'
 
 type ScoreBoardProps = {
   highscores: UserScore[]
