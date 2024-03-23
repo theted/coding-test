@@ -1,4 +1,4 @@
-import { Score, User, UserScore, ResultObject } from "./types"
+import { Score, User, UserScore, ResultObject } from './types'
 
 export const ucFirst = (str: string) => {
   return str[0].toUpperCase() + str.slice(1).toLowerCase()
@@ -11,11 +11,17 @@ export const ucFirstObjects = (arr: UserScore[]) => {
   }))
 }
 
-export const mapScoresToUsers = (scores: Score[], users: User[]) => {
-  return scores.map((scoreObj) => ({
-    name: users.find((user) => user._id === scoreObj.userId)?.name,
-    score: scoreObj.score,
-  }))
+export const mapScoresToUsers = (
+  scores: Score[],
+  users: User[]
+): UserScore[] => {
+  return scores
+    .map((scoreObj) => ({
+      name:
+        users.find((user) => user._id === scoreObj.userId)?.name ?? 'unknown',
+      score: scoreObj.score,
+    }))
+    .filter((scoreObj) => scoreObj.name !== 'unknown')
 }
 
 export const sortArrayOfObjectsByProperty = <T>(obj: T[], prop: keyof T) => {
@@ -40,7 +46,7 @@ export const toResultObject = (arr: UserScore[]): ResultObject => {
 
 export const getHighscores = (arr: UserScore[]): UserScore[] => {
   const ucFirstFilterd = ucFirstObjects(arr)
-  const sorted = sortArrayOfObjectsByProperty(ucFirstFilterd, "score")
-  const unique = filterUniqueObjects(sorted, "name")
+  const sorted = sortArrayOfObjectsByProperty(ucFirstFilterd, 'score')
+  const unique = filterUniqueObjects(sorted, 'name')
   return unique
 }

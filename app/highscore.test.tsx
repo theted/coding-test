@@ -69,4 +69,20 @@ describe("Score calculation", () => {
       Foo: 200,
     });
   });
+
+  it("handles incorrect/missmatched data without errors", () => {
+    const userData = [
+      { _id: 1, name: "Foo" },
+      { _id: 2, name: "Bar" },
+    ];
+
+    const scoreData = [
+      { userId: 1, score: 100 },
+      { userId: 10, score: 100 },
+    ];
+
+    const mapped = mapScoresToUsers(scoreData, userData);
+
+    expect(mapped).toEqual([{ name: "Foo", score: 100 }]);
+  });
 });
