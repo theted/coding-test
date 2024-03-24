@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Box, VStack, HStack, H1 } from '@northlight/ui'
-import { ExcelDropzone, ExcelRow } from './excel-dropzone.jsx'
+import { Container, Box, HStack, H1 } from '@northlight/ui'
+import { ExcelDropzone } from './excel-dropzone.jsx'
 import { ScoreBoard } from './ScoreBoard'
 import { mapScoresToUsers, getHighscores } from './helpers.js'
 import scores from './scores'
@@ -8,17 +8,16 @@ import users from './users'
 import { Form } from './Form'
 import { UserScore } from './types'
 
-const initialUserScores = mapScoresToUsers(scores, users)
-
 export default function App() {
   const [highscores, setHighscores] = useState<UserScore[]>([])
 
   useEffect(() => {
+    const initialUserScores = mapScoresToUsers(scores, users)
     const initialHighscores = getHighscores(initialUserScores)
     setHighscores(initialHighscores)
   }, [])
 
-  function handleSheetData(data: ExcelRow[]) {
+  const handleSheetData = (data: UserScore[]) => {
     setHighscores(getHighscores([...highscores, ...data]))
   }
 

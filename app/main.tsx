@@ -15,7 +15,7 @@ root.render(
         minHeight="100vh"
         display="flex"
         alignItems="center"
-        bgGradient="radial(gray.300, gray.200)"
+        bgGradient="radial(mediatoolBlue.900, mediatoolBlue.800)"
       >
         <App />
       </Container>
