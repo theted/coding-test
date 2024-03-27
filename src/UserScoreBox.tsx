@@ -1,5 +1,5 @@
 import { UserScore } from './types'
-import { H4 } from '@northlight/ui'
+import { H4, Fade, Container, Box } from '@northlight/ui'
 
 type UserScoreBoxProps = {
   name: string
@@ -12,13 +12,13 @@ export const UserScoreBox = ({ name, allScores }: UserScoreBoxProps) => {
     .sort((a, b) => b.score - a.score)
 
   return (
-    <div>
-      <H4>{name}</H4>
-      <div>
+    <Container p="0" mb="4">
+      <Fade in>
+        <H4>{name}</H4>
         {userData.map((row) => {
-          return <div key={row.score}>{row.score}</div>
+          return <Box key={row.score}>{row.score}</Box>
         })}
-      </div>
-    </div>
+      </Fade>
+    </Container>
   )
 }

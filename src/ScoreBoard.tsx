@@ -1,6 +1,6 @@
 import React from 'react'
 import { UserScore } from './types'
-import { Table, Thead, Tbody, Tr, Th, Td, Fade } from '@northlight/ui'
+import { Table, Thead, Tbody, Tr, Th, Td, Fade, Link } from '@northlight/ui'
 
 type ScoreBoardProps = {
   highscores: UserScore[]
@@ -26,7 +26,7 @@ export const ScoreBoard = ({
           <Tr key={name}>
             <Td>
               <Fade in>
-                <a onClick={() => setSelectedUser(name)}>{name}</a>
+                <Link onClick={() => setSelectedUser(name)}>{name}</Link>
               </Fade>
             </Td>
             <Td>

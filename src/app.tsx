@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Box, HStack, H1 } from '@northlight/ui'
+import { Container, Box, HStack, H1, Link } from '@northlight/ui'
 import { ExcelDropzone } from './excel-dropzone.jsx'
 import { ScoreBoard } from './ScoreBoard'
 import { mapScoresToUsers, getHighscores } from './helpers.js'
@@ -60,16 +60,19 @@ export default function App() {
           <Form onFormSubmit={handleFormSubmit} />
         </Box>
 
-        <Box>
-          <ScoreBoard
-            highscores={highscores}
-            setSelectedUser={setSelectedUser}
-          />
-        </Box>
-
-        {selectedUser && (
+        {selectedUser ? (
           <Box>
             <UserScoreBox name={selectedUser} allScores={allScores} />
+            <Link onClick={() => setSelectedUser(null)}>
+              Back to highscores
+            </Link>
+          </Box>
+        ) : (
+          <Box>
+            <ScoreBoard
+              highscores={highscores}
+              setSelectedUser={setSelectedUser}
+            />
           </Box>
         )}
       </HStack>
