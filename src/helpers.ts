@@ -15,13 +15,13 @@ export const mapScoresToUsers = (
   scores: Score[],
   users: User[]
 ): UserScore[] => {
-  return scores
-    .map((scoreObj) => ({
-      name:
-        users.find((user) => user._id === scoreObj.userId)?.name ?? 'unknown',
-      score: scoreObj.score,
-    }))
-    .filter((scoreObj) => scoreObj.name !== 'unknown')
+  return scores.reduce((acc, scoreObj) => {
+    const user = users.find((user) => user._id === scoreObj.userId)
+    if (user) {
+      acc.push({ name: user.name, score: scoreObj.score })
+    }
+    return acc
+  }, [] as UserScore[])
 }
 
 export const sortArrayOfObjectsByProperty = <T>(obj: T[], prop: keyof T) => {
