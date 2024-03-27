@@ -4,9 +4,13 @@ import { Table, Thead, Tbody, Tr, Th, Td, Fade } from '@northlight/ui'
 
 type ScoreBoardProps = {
   highscores: UserScore[]
+  setSelectedUser: (name: string) => void
 }
 
-export const ScoreBoard = ({ highscores }: ScoreBoardProps) => {
+export const ScoreBoard = ({
+  highscores,
+  setSelectedUser,
+}: ScoreBoardProps) => {
   if (!highscores.length) return null
 
   return (
@@ -21,7 +25,9 @@ export const ScoreBoard = ({ highscores }: ScoreBoardProps) => {
         {highscores.map(({ name, score }) => (
           <Tr key={name}>
             <Td>
-              <Fade in>{name}</Fade>
+              <Fade in>
+                <a onClick={() => setSelectedUser(name)}>{name}</a>
+              </Fade>
             </Td>
             <Td>
               <Fade in>{score}</Fade>

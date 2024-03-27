@@ -7,22 +7,30 @@ import scores from './scores'
 import users from './users'
 import { Form } from './Form'
 import { UserScore } from './types'
+import { UserScoreBox } from './UserScoreBox'
 
 export default function App() {
   const [highscores, setHighscores] = useState<UserScore[]>([])
+  const [allScores, setAllScores] = useState<UserScore[]>([])
+  const [selectedUser, setSelectedUser] = useState<string | null>(null)
 
   useEffect(() => {
     const initialUserScores = mapScoresToUsers(scores, users)
     const initialHighscores = getHighscores(initialUserScores)
+    setAllScores(initialUserScores)
     setHighscores(initialHighscores)
   }, [])
 
+  useEffect(() => {
+    setHighscores(getHighscores(allScores))
+  }, [allScores])
+
   const handleSheetData = (data: UserScore[]) => {
-    setHighscores(getHighscores([...highscores, ...data]))
+    setAllScores([...allScores, ...data])
   }
 
   const handleFormSubmit = (formData: UserScore) => {
-    setHighscores(getHighscores([...highscores, formData]))
+    setAllScores([...allScores, formData])
   }
 
   return (
@@ -52,8 +60,17 @@ export default function App() {
         </Box>
 
         <Box>
-          <ScoreBoard highscores={highscores} />
+          <ScoreBoard
+            highscores={highscores}
+            setSelectedUser={setSelectedUser}
+          />
         </Box>
+
+        {selectedUser && (
+          <Box>
+            <UserScoreBox name={selectedUser} allScores={allScores} />
+          </Box>
+        )}
       </HStack>
     </Container>
   )
