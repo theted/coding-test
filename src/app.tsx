@@ -5,6 +5,7 @@ import { ScoreBoard } from './ScoreBoard'
 import { mapScoresToUsers, getHighscores } from './helpers.js'
 import scores from './scores'
 import users from './users'
+import { ucFirst } from './helpers.js'
 import { Form } from './Form'
 import { UserScore } from './types'
 import { UserScoreBox } from './UserScoreBox'
@@ -29,8 +30,8 @@ export default function App() {
     setAllScores([...allScores, ...data])
   }
 
-  const handleFormSubmit = (formData: UserScore) => {
-    setAllScores([...allScores, formData])
+  const handleFormSubmit = ({ name, score }: UserScore) => {
+    setAllScores([...allScores, { name: ucFirst(name), score }])
   }
 
   return (
