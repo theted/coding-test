@@ -1,74 +1,66 @@
-import React, { useState, useRef, FormEvent } from 'react'
-import { FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
-import { P } from '@northlight/ui'
+import React from 'react'
+import { useForm, Form, TextField, Button, Stack } from '@northlight/ui'
 
 type FormData = {
   name: string
-  score: number
+  score: string
 }
 
 type FormProps = {
   onFormSubmit: (data: FormData) => void
 }
 
-export const Form = ({ onFormSubmit }: FormProps) => {
-  const [name, setName] = useState('')
-  const [score, setScore] = useState<number | null>()
-  const [error, setError] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
+export const ScoreForm = ({ onFormSubmit }: FormProps) => {
+  const initialValues = { name: '', score: '' }
 
-  const updateField = (e: FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget
-    setError(false)
-    if (name === 'name') setName(value)
-    if (name === 'score') setScore(Number(value))
-  }
-
-  const validateAndSubmit = (e: FormEvent) => {
-    e.preventDefault()
-
-    if (!name || !score) {
-      setError(true)
-      return
+  const validation = (values: any) => {
+    const errors: any = {}
+    if (values.name.length < 1) {
+      errors.name = {
+        message: 'Name is required',
+      }
     }
 
-    onFormSubmit({ name, score })
-    setName('')
-    setScore(null)
-
-    if (inputRef.current) {
-      inputRef.current.focus()
+    if (values.score.length === 0) {
+      errors.score = { message: 'Score is required' }
+    } else if (isNaN(Number(values.score))) {
+      errors.score = { messsage: 'Score must be a number' }
+    } else if (values.score < 1) {
+      errors.score = { message: 'Score must be a positive number' }
     }
+
+    return errors
   }
+
+  const methods = useForm({
+    defaultValues: initialValues,
+    mode: 'onSubmit',
+    resolver: (values) => {
+      return {
+        values,
+        errors: validation(values),
+      }
+    },
+  })
 
   return (
-    <form onSubmit={validateAndSubmit}>
-      <FormControl isInvalid={error} mb="4">
-        <FormLabel htmlFor="name">Name</FormLabel>
-        <Input
-          type="text"
-          name="name"
-          value={name}
-          onInput={updateField}
-          ref={inputRef}
-        />
-      </FormControl>
-
-      <FormControl isInvalid={error} mb="4">
-        <FormLabel htmlFor="score">Score</FormLabel>
-        <Input
-          type="number"
-          name="score"
-          value={score ? score.toString() : ''}
-          onInput={updateField}
-        />
-      </FormControl>
-
-      {error && <P>Both fields are required</P>}
-
-      <Button mt={2} colorScheme="teal" type="submit">
-        Submit
-      </Button>
-    </form>
+    <Form
+      initialValues={initialValues}
+      validate={validation}
+      methods={methods}
+      onSubmit={(values) => {
+        onFormSubmit(values)
+        methods.reset()
+        methods.setFocus('name')
+      }}
+    >
+      <Stack spacing={4}>
+        <TextField name="name" label="Name" autoFocus />
+        <TextField name="score" label="Score" type="number" />
+        <Button type="submit" variant="brand">
+          Submit
+        </Button>
+      </Stack>
+    </Form>
   )
 }

@@ -6,7 +6,7 @@ import { mapScoresToUsers, getHighscores } from './helpers.js'
 import scores from './scores'
 import users from './users'
 import { ucFirst } from './helpers.js'
-import { Form } from './Form'
+import { ScoreForm } from './Form'
 import { UserScore } from './types'
 import { UserScoreBox } from './UserScoreBox'
 
@@ -55,7 +55,9 @@ export default function App() {
           label="Import excel file here"
         />
         <Box>
-          <Form onFormSubmit={handleFormSubmit} />
+          <ScoreForm
+            onFormSubmit={handleFormSubmit as (data: FormData) => void}
+          />
         </Box>
 
         {selectedUser ? (
