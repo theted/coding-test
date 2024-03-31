@@ -17,9 +17,7 @@ export default function App() {
 
   useEffect(() => {
     const initialUserScores = mapScoresToUsers(scores, users)
-    const initialHighscores = getHighscores(initialUserScores)
     setAllScores(initialUserScores)
-    setHighscores(initialHighscores)
   }, [])
 
   useEffect(() => {
@@ -63,7 +61,7 @@ export default function App() {
         {selectedUser ? (
           <Box>
             <UserScoreBox name={selectedUser} allScores={allScores} />
-            <Link onClick={() => setSelectedUser(null)}>
+            <Link onClick={() => setSelectedUser(null)} fontWeight="bold">
               Back to highscores
             </Link>
           </Box>

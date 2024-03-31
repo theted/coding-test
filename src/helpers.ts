@@ -59,3 +59,12 @@ export const getHighscores = (arr: UserScore[]): UserScore[] => {
   const unique = filterUniqueObjects(sorted, 'name')
   return unique
 }
+
+export const filterUserScores = (
+  name: string,
+  scores: UserScore[]
+): UserScore[] => {
+  return scores
+    .filter((row) => row.name === name)
+    .sort((a, b) => b.score - a.score)
+}
