@@ -15,18 +15,18 @@ export const mapScoresToUsers = (
   scores: Score[],
   users: User[]
 ): UserScore[] => {
-  const idsToUserNameMap: { [key: number]: string } = {}
+  const idsToUserNameMap = users.reduce(
+    (acc: { [key: number]: string }, user) => {
+      acc[user._id] = user.name
+      return acc
+    },
+    {}
+  )
 
-  users.map((user) => {
-    idsToUserNameMap[user._id] = user.name
-  })
-
-  const scoresWithUsers = scores.map((score) => {
-    return {
-      name: idsToUserNameMap[score.userId],
-      score: score.score,
-    }
-  })
+  const scoresWithUsers = scores.map((score) => ({
+    name: idsToUserNameMap[score.userId],
+    score: score.score,
+  }))
   // NOTE: if we assume that we might get incorrectly formated data, the following iteration will make sure that the resulting array has no mismatches
   // .filter((obj) => obj.name !== undefined)
 
